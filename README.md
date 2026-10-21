@@ -3,7 +3,7 @@
 Ask questions about 13 internal policy documents and get streamed answers with sources. RavenDB
 runs the RAG pipeline: it summarises each document, chunks and embeds it, keeps both current when
 a document changes, runs the vector search and hosts the agent that answers. This app deploys
-that setup, loads the sample data and serves three pages.
+that setup, loads the sample data and serves one page with two modes, Ask and Search.
 
 The documents and users describe a made-up logistics company. Every name, rule and number is invented.
 
@@ -40,6 +40,9 @@ users into an empty database. The rest is done by RavenDB.
 
 ## Things to try
 
+- **Press *How it works*.** A short walkthrough that sends a real question and follows it through
+  RavenDB: the answer, the agent's tool query as stored in RavenDB, the department scope, the
+  chunks the source was embedded as, and the same question in Search as one RQL query.
 - **Switch users.** The menu at the top right picks one of eight users, each in one department.
   Search, documents and the agent only see that department's documents. For the agent this is an
   agent parameter the app sets when a conversation starts: the model can't see or change it, so
@@ -48,7 +51,10 @@ users into an empty database. The rest is done by RavenDB.
 - **Edit a document in Studio.** Change a rule in a `HandbookDocuments` document. Within seconds
   only that document is summarised and embedded again, and the agent quotes the new text.
   Restarting the app reprocesses nothing.
-- **The query.** The Search page shows the RQL it ran: the department filter and the vector
+- **The chunks.** Open a document and turn on *Show chunks* to see where it was split and the
+  prefix each chunk was embedded with. The embeddings task keeps the chunk text
+  (`StoreChunkText`), so this is exactly what RavenDB embedded.
+- **The query.** Search shows the RQL it ran: the department filter and the vector
   search are one query.
 - **The agent's work.** Every answer shows what the agent searched for, the tokens it used and
   how long it took. The whole conversation, tool calls included, is a document in the
@@ -87,13 +93,13 @@ data/
   handbook/             the documents, one markdown file each
   users.json            the sample users
 src/RavenRag.Web/
-  Program.cs            services and the four endpoints
+  Program.cs            services and the six endpoints
   PipelineSetup.cs      deploys the connection strings, both tasks and the agent
   Scripts.cs            the prompts and JavaScript that run in RavenDB
   SampleData.cs         loads the documents and users into an empty database
   SearchService.cs      vector search
   AskService.cs         agent conversations, streamed as server-sent events
-  DocumentService.cs    documents and source titles
+  DocumentService.cs    documents, their chunks and source titles
   User.cs               users
-  wwwroot/              the Ask, Search and Document pages
+  wwwroot/              the page: Ask and Search modes, the document dialog, the walkthrough
 ```

@@ -10,8 +10,10 @@ public static class Names
     public const string EmbeddingsConnection = "handbook-embeddings";
 
     public const string SummaryTask = "handbook-summaries";
-    public const string EmbeddingsTask = "handbook-chunks";
-    public const string EmbeddingsField = "Chunks";
+    public const string EmbeddingsTask = "handbook-embeddings";
+
+    /// <summary>The embedded field, named after the property its chunks come from.</summary>
+    public const string EmbeddingsField = "Markdown";
 
     public const string Agent = "handbook-assistant";
 

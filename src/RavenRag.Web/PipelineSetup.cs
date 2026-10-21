@@ -78,7 +78,9 @@ public sealed class PipelineSetup(IDocumentStore store, IOptions<AiSettings> ai)
             Collection = Names.Collection,
             EmbeddingsTransformation = new EmbeddingsTransformation { Script = Scripts.Embeddings },
             // Required. How search terms are chunked before embedding; the defaults suit short queries.
-            ChunkingOptionsForQuerying = new ChunkingOptions()
+            ChunkingOptionsForQuerying = new ChunkingOptions(),
+            // Keeps each chunk's text next to its embedding, so the document view can show the split.
+            StoreChunkText = true
         };
 
         if (await FindTaskIdAsync(Names.EmbeddingsTask, OngoingTaskType.EmbeddingsGeneration, ct) is { } taskId)
@@ -104,7 +106,9 @@ public sealed class PipelineSetup(IDocumentStore store, IOptions<AiSettings> ai)
                 new AiAgentToolQuery
                 {
                     Name = "search",
-                    Description = "Search the documents by meaning. Returns the id, title and summary of the best matches.",
+                    Description =
+                        "Semantic search over the documents: pass a plain sentence, like the user's question. " +
+                        "Extra keywords do not help. Returns the id, title and summary of the best matches.",
                     // A looser cut than the search page: the agent reads what it finds and judges
                     // relevance itself, and an empty result only makes it search again.
                     Query = $"""
@@ -114,7 +118,7 @@ public sealed class PipelineSetup(IDocumentStore store, IOptions<AiSettings> ai)
                         select id() as Id, Title, Summary
                         limit 5
                         """,
-                    ParametersSampleObject = """{ "query": "what to look for, worded the way a policy would put it" }"""
+                    ParametersSampleObject = """{ "query": "what you are looking for, in a plain sentence" }"""
                 },
                 new AiAgentToolQuery
                 {

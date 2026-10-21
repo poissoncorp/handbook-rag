@@ -12,6 +12,8 @@ public sealed record AskRequest(string Prompt, string? ConversationId, string Us
 
 public sealed record AskResult(string ConversationId, List<Source> Sources, List<string> Searches, long Tokens, double Seconds);
 
+public sealed record AgentTool(string Name, string Query);
+
 /// <summary>The shape the agent answers in.</summary>
 public sealed class AgentAnswer
 {
@@ -53,6 +55,13 @@ public sealed class AskService(IDocumentStore store, DocumentService documents, 
             await GetLastSearchesAsync(chat.Id, ct),
             result.Usage.TotalTokens,
             result.Elapsed.TotalSeconds), "done");
+    }
+
+    /// <summary>The agent's query tools as RavenDB stores them, for the walkthrough.</summary>
+    public async Task<List<AgentTool>> GetToolsAsync(CancellationToken ct)
+    {
+        var agent = await store.AI.GetAgentAsync(Names.Agent, ct);
+        return [.. agent.Queries.Select(q => new AgentTool(q.Name, q.Query))];
     }
 
     private async Task<(AiAnswer<AgentAnswer>? Result, string? Error)> RunAsync(
