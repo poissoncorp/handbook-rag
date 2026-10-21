@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ask the handbook</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css">
+    <link rel="stylesheet" href="app.css">
+    <script type="module" src="ask.js"></script>
+</head>
+<body>
+<header class="container">
+    <nav>
+        <ul><li><strong>Handbook</strong></li></ul>
+        <ul>
+            <li><a href="./" aria-current="page">Ask</a></li>
+            <li><a href="search.html">Search</a></li>
+            <li><details id="user" class="dropdown"><summary aria-busy="true"></summary><ul></ul></details></li>
+        </ul>
+    </nav>
+</header>
+<main class="container">
+    <div id="messages"></div>
+    <form id="ask">
+        <fieldset role="group">
+            <input name="prompt" placeholder="Ask about the handbook" autocomplete="off" required>
+            <button type="submit">Ask</button>
+        </fieldset>
+    </form>
+    <button id="new-conversation" class="secondary outline" hidden>New conversation</button>
+</main>
+</body>
+</html>

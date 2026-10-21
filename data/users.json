@@ -1,0 +1,10 @@
+[
+  { "Name": "Ada Lindqvist", "Department": "People Operations" },
+  { "Name": "Ben Okafor", "Department": "Finance" },
+  { "Name": "Chloé Martin", "Department": "Procurement" },
+  { "Name": "Dev Patel", "Department": "IT Security" },
+  { "Name": "Eva Novak", "Department": "Legal" },
+  { "Name": "Farid Haddad", "Department": "Compliance" },
+  { "Name": "Grace Kim", "Department": "Customer Operations" },
+  { "Name": "Hugo Visser", "Department": "Operations" }
+]

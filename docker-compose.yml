@@ -1,0 +1,28 @@
+services:
+  ravendb:
+    image: ravendb/ravendb:7.2.7
+    environment:
+      RAVEN_Setup_Mode: None
+      RAVEN_License_Eula_Accepted: "true"
+      RAVEN_License: ${RAVEN_LICENSE:?Set RAVEN_LICENSE in .env (a free RavenDB Developer licence, as one line of JSON)}
+      RAVEN_ServerUrl: http://0.0.0.0:8080
+      # Unsecured, so the app can reach it over the compose network. Published on localhost only.
+      RAVEN_Security_UnsecuredAccessAllowed: PublicNetwork
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ravendb-data:/var/lib/ravendb/data
+
+  app:
+    build: .
+    depends_on:
+      ravendb:
+        condition: service_healthy
+    environment:
+      Raven__Url: http://ravendb:8080
+      Ai__ApiKey: ${OPENAI_API_KEY:?Set OPENAI_API_KEY in .env}
+    ports:
+      - "127.0.0.1:5199:8080"
+
+volumes:
+  ravendb-data:

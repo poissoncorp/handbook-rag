@@ -1,0 +1,22 @@
+.chip {
+    display: inline-block;
+    padding: 0 0.6em;
+    border-radius: 1em;
+    font-size: 0.8em;
+    background: var(--pico-secondary-background);
+    color: var(--pico-secondary-inverse);
+}
+
+/* Open the user menu towards the left, it sits at the right edge of the nav. */
+#user > ul {
+    left: auto;
+    right: 0;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+.error {
+    color: var(--pico-del-color);
+}
